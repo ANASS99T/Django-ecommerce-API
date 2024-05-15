@@ -1,0 +1,7 @@
+{
+    "django.snippets.exclude": [
+        "cms",
+        "wagtail",
+    ],
+    "python.defaultInterpreterPath" : "/Users/black/projects/.venv/bin/python3",
+}
