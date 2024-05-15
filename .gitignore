@@ -1,0 +1,36 @@
+# .gitignore
+
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__
+local_settings.py
+db.sqlite3
+media
+
+# Development
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
+*.orig
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
