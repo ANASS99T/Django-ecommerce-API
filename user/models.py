@@ -12,7 +12,7 @@ class Client(AbstractUser):
     )
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    roles = models.ManyToManyField(Role)
+    roles = models.ManyToManyField(Role, blank=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     date_of_birth = models.DateField(null=True, blank=True)
     profile_picture = models.ImageField(
@@ -36,10 +36,20 @@ class Client(AbstractUser):
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
-    
+
     def short_name(self):
         return f'{self.first_name[0]}. {self.last_name}'
 
+    def set_active(self):
+        self.is_active = True
+        self.save()
+
+    # def create_user(self, username, password, email, first_name, last_name):
+    #     user = self.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
+    #     user.set_password(password)
+    #     user.save()
+    #     print("User created successfully")
+    #     return user
+
     class Meta:
         app_label = 'user'
-        
