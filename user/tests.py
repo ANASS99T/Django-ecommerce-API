@@ -5,7 +5,7 @@ from rest_framework import status
 from .models import Client
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
-
+from user.views import check_permissions, check_auth
 class ClientViewTestCase(TestCase):
     def setUp(self):
         self.url = reverse('clients-list')

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from global_vars.models import Global_Vars
 from user.models import Client
 from user.serializer import ClientSerializer
-from helpers.permission_helpers import check_permissions, unauthorized
+from helpers.permission_helpers import check_permissions, unauthorized, check_auth
 from django.contrib.auth.hashers import make_password
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
