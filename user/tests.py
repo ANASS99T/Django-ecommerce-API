@@ -49,6 +49,50 @@ class ClientViewTestCase(TestCase):
 
         mock_check_permissions.assert_called_once()
 
+    def test_update_client(self):
+        # TODO: Implement test logic
+        pass
+
+    def test_self_update_client(self):
+        # TODO: Implement test logic
+        pass
 
 
-   
+    def test_destroy_client(self):
+        # TODO: Implement test logic
+        pass
+
+
+    def test_self_destroy_client(self):
+        # TODO: Implement test logic
+        pass
+
+
+    def test_list_clients(self):
+        # TODO: Implement test logic
+        pass
+
+
+    def test_retrieve_client(self):
+        # TODO: Implement test logic
+        pass
+
+
+    def test_reset_password(self):
+        # TODO: Implement test logic
+        pass
+
+
+    def test_self_reset_password(self):
+        # TODO: Implement test logic
+        pass
+
+
+    def test_login(self):
+        # TODO: Implement test logic
+        pass
+
+
+    def test_register(self):
+        # TODO: Implement test logic
+        pass

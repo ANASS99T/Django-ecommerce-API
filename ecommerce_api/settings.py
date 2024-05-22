@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'review',
     'roles',
     'support',
+    'global_vars',
 ]
 
 MIDDLEWARE = [
