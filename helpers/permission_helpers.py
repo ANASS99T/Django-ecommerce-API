@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status
+from roles.models import Role, Permission
 
 def check_auth(request):
     return request.user.is_authenticated
@@ -10,7 +11,10 @@ def check_permissions(request, permissions, option='AND'):
     if not check_auth(request):
         return False
     roles = request.user.roles.all()
-    if not roles:
+
+    roles_list = list(roles)
+
+    if not roles_list:
         return False
 
     if not isinstance(permissions, list):
@@ -31,4 +35,4 @@ def check_permissions(request, permissions, option='AND'):
         return False
 
 def unauthorized():
-    return Response({'message': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    return Response({'message': 'Unauthorized to do this action'}, status=status.HTTP_401_UNAUTHORIZED)

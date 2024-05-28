@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     'global_vars',
 ]
 
+AUTH_USER_MODEL = 'user.Client'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

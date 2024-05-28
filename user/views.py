@@ -40,7 +40,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     def self_update(self, request, *args, **kwargs):
         if not check_permissions(request, ['can_update_client_self']):
             return unauthorized()
-        instance = request.user.client
+        instance = request.user
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)

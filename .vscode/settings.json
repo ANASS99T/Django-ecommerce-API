@@ -3,5 +3,10 @@
         "cms",
         "wagtail",
     ],
-    "python.defaultInterpreterPath" : "/Users/black/projects/.venv/bin/python3",
+    "python.defaultInterpreterPath": "/Users/black/projects/.venv/bin/python3",
+    "python.testing.pytestArgs": [
+        "user"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
 }
