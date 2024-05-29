@@ -7,8 +7,7 @@ from roles.models import Role
 class Client(AbstractUser):
     GENDER_CHOICES = (
         ('M', 'Male'),
-        ('F', 'Female'),
-        ('O', 'Other'),
+        ('F', 'Female')
     )
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -43,13 +42,6 @@ class Client(AbstractUser):
     def set_active(self):
         self.is_active = True
         self.save()
-
-    # def create_user(self, username, password, email, first_name, last_name):
-    #     user = self.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
-    #     user.set_password(password)
-    #     user.save()
-    #     print("User created successfully")
-    #     return user
 
     class Meta:
         app_label = 'user'

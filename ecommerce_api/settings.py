@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'user',
     'product',
     'category',
@@ -47,7 +48,11 @@ INSTALLED_APPS = [
     'review',
     'roles',
     'support',
+    'global_vars',
 ]
+
+AUTH_USER_MODEL = 'user.Client'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
