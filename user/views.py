@@ -35,7 +35,7 @@ class ClientViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
-    
+
     @action(detail=False, methods=['put'])
     def self_update(self, request, *args, **kwargs):
         if not check_permissions(request, ['can_update_client_self']):
@@ -45,7 +45,7 @@ class ClientViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
-    
+
     @action(detail=False, methods=['delete'])
     def destroy_list(self, request, *args, **kwargs):
         if not check_permissions(request, 'can_delete_client_all'):
@@ -59,28 +59,28 @@ class ClientViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         if not check_permissions(request, 'can_delete_client'):
             return unauthorized()
-        instance = self.get_object()
-        self.perform_destroy(instance)
+        client = self.get_object()
+        client.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
     @action(detail=False, methods=['delete'])
     def self_destroy(self, request, *args, **kwargs):
         if not check_permissions(request, 'can_delete_client_self'):
             return unauthorized()
-        instance = request.user.client
-        self.perform_destroy(instance)
+        instance = request.user
+        instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
     def list(self, request, *args, **kwargs):
         if not check_permissions(request, 'can_view_client_all'):
             return unauthorized()
         return super().list(request, *args, **kwargs)
-    
+
     def retrieve(self, request, *args, **kwargs):
         if not check_permissions(request, 'can_view_client'):
             return unauthorized()
         return super().retrieve(request, *args, **kwargs)
-    
+
     @action(detail=True, methods=['post'])
     def reset_password(self, request, *args, **kwargs):
         if not check_permissions(request, 'can_reset_password'):
@@ -89,59 +89,68 @@ class ClientViewSet(viewsets.ModelViewSet):
         try:
             global_var = Global_Vars.objects.get(key='default_password')
         except Global_Vars.DoesNotExist:
-            return Response({"error": "Default password not set in global variables"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Default password not set in global variables"},
+                            status=status.HTTP_400_BAD_REQUEST)
         new_password = global_var.value
-        instance.password = make_password(new_password)  # Hash the new password before saving
+        instance.password = make_password(new_password)
         instance.save()
-        return Response(status=status.HTTP_200_OK)
-    
+        return Response(status=status.HTTP_200_OK, data={"message": "Password reset successfully"})
+
     @action(detail=False, methods=['post'])
     def self_reset_password(self, request, *args, **kwargs):
-        if not check_permissions(request, ['can_reset_password','can_reset_password_self'], option='OR'):
+        if not check_permissions(request, ['can_reset_password', 'can_reset_password_self'], option='OR'):
             return unauthorized()
-        instance = request.user.client
+        instance = request.user
         try:
             global_var = Global_Vars.objects.get(key='default_password')
         except Global_Vars.DoesNotExist:
-            return Response({"error": "Default password not set in global variables"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Default password not set in global variables"},
+                            status=status.HTTP_400_BAD_REQUEST)
         new_password = global_var.value
         instance.password = make_password(new_password)
+        return Response(status=status.HTTP_200_OK, data={"message": "Password reset successfully"})
 
     @action(detail=False, methods=['post'])
     def login(self, request):
         email = request.data.get('email')
         phone_number = request.data.get('phone_number')
         password = request.data.get('password')
+        client = None
 
         if not password or not (email or phone_number):
-            return Response({"error": "Email or phone number and password are required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Email or phone number and password are required"},
+                            status=status.HTTP_400_BAD_REQUEST)
 
-        User = get_user_model()
+        user = get_user_model()
         try:
             if email:
-                user = User.objects.get(email=email)
+                client = user.objects.get(email=email)
             else:
-                user = User.objects.get(phone_number=phone_number)
-        except User.DoesNotExist:
+                client = user.objects.get(phone_number=phone_number)
+        except client.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        if not user.is_active:
+        if not client.is_active:
             return Response({"error": "User is not active"}, status=status.HTTP_403_FORBIDDEN)
-        if not user.check_password(password):
-            return Response({"error": "Invalid password"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        token, created = Token.objects.get_or_create(user=user)
+
+        token, created = Token.objects.get_or_create(user=client)
         if not created:
             return Response({"error": "Failed to create token"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response({"message": "User logged in successfully", "token": token.key}, status=status.HTTP_200_OK)
-    
+
     @action(detail=False, methods=['post'])
     def register(self, request):
         email = request.data.get('email')
         phone_number = request.data.get('phone_number')
         password = request.data.get('password')
         confirm_password = request.data.get('confirm_password')
+        username = request.data.get('username')
+
+        if not username:
+            username = email
+
+        client = None
 
         if not email and not phone_number:
             return Response({"error": "Email or phone number is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -150,15 +159,23 @@ class ClientViewSet(viewsets.ModelViewSet):
         if password != confirm_password:
             return Response({"error": "Passwords do not match"}, status=status.HTTP_400_BAD_REQUEST)
 
-        User = get_user_model()
-        try:
-            if email:
-                User.objects.get(email=email)
-            else:
-                User.objects.get(phone_number=phone_number)
+        user = get_user_model()
+
+        if email:
+            try:
+                client = user.objects.get(email=email)
+            except user.DoesNotExist:
+                pass
+        elif phone_number:
+            try:
+                client = user.objects.get(phone_number=phone_number)
+            except user.DoesNotExist:
+                pass
+        else:
+            return Response({"error": "Email or Phone number is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if client:
             return Response({"error": "User already exists"}, status=status.HTTP_400_BAD_REQUEST)
-        except User.DoesNotExist:
-            pass
 
         try:
             validate_password(password)
@@ -166,10 +183,10 @@ class ClientViewSet(viewsets.ModelViewSet):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            user = User.objects.create_user(email=email, phone_number=phone_number, password=password)
+            user = Client.objects.create_user(username=username, email=email, phone_number=phone_number, password=password)
         except DatabaseError as e:
             return Response({"error": "Database error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         if not user:
             return Response({"error": "Failed to create user"}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
+        return Response({"message": "User registered successfully", "username":user.username}, status=status.HTTP_201_CREATED)
