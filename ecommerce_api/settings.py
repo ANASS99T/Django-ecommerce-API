@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'roles',
     'support',
     'global_vars',
+    'permission',
 ]
 
 AUTH_USER_MODEL = 'user.Client'
