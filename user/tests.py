@@ -7,7 +7,6 @@ from rest_framework import status
 from global_vars.models import Global_Vars
 from roles.models import Role, Permission
 from .models import Client
-# from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 from user.views import check_permissions, check_auth
 
