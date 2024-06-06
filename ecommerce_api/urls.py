@@ -8,5 +8,8 @@ urlpatterns = [
     path('api/permissions/', include('permission.urls')),
     path('api/categories/', include('category.urls')),
     path('api/support/', include('support.urls')),
+    path('api/characteristics/', include('characteristic.urls')),
+    path('api/currencies/', include('currency.urls')),
+    path('api/documents/', include('document.urls')),
 
 ]

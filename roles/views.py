@@ -7,7 +7,7 @@ from roles.serializer import RoleSerializer
 
 
 class RoleViewSet(viewsets.ModelViewSet):
-    queryset = Role.objects.all()
+    queryset = Role.objects.filter(deleted_at__isnull=True)
     serializer_class = RoleSerializer
 
     def create(self, request, *args, **kwargs):

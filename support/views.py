@@ -8,7 +8,7 @@ from support.serializer import SupportSerializer
 
 
 class SupportViewSet(viewsets.ModelViewSet):
-    queryset = Support.objects.all()
+    queryset = Support.objects.filter(deleted_at__isnull=True)
     serializer_class = SupportSerializer
 
     def create(self, request, *args, **kwargs):

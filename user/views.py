@@ -14,7 +14,7 @@ from rest_framework.decorators import action
 
 
 class ClientViewSet(viewsets.ModelViewSet):
-    queryset = Client.objects.all()
+    queryset = Client.objects.filter(deleted_at__isnull=True)
     serializer_class = ClientSerializer
 
     def create(self, request, *args, **kwargs):
