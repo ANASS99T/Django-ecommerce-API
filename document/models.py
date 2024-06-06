@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from product.models import Product
-
+import os
 
 class Document(models.Model):
 
@@ -26,4 +26,14 @@ class Document(models.Model):
     def delete(self, *args, **kwargs):
         self.deleted_at = timezone.now()
         self.status = False
-        self.save()
+        try:
+            os.makedirs('documents/deleted', exist_ok=True)
+            os.rename(self.path.path, os.path.join('documents/deleted', os.path.basename(self.path.path)))
+            self.save()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+
+
+

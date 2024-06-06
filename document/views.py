@@ -6,6 +6,7 @@ from document.models import Document
 from document.serializer import DocumentSerializer
 from product.models import Product
 
+
 class DocumentViewSet(viewsets.ModelViewSet):
     queryset = Document.objects.filter(deleted_at__isnull=True)
     serializer_class = DocumentSerializer
@@ -34,8 +35,10 @@ class DocumentViewSet(viewsets.ModelViewSet):
             return unauthorized()
         try:
             document = self.get_object()
-            document.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            if document.delete():
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response({'error': 'Error deleting the document'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
