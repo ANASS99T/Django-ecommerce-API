@@ -35,3 +35,4 @@ media
 ehthumbs.db
 Thumbs.db
 .env!/.env
+!/documents/

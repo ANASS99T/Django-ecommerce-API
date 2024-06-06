@@ -17,7 +17,7 @@ ENV_PATH = Path('.') / '.env'
 if not ENV_PATH.exists():
     ENV_PATH = Path('.') / '.env.prod'
 
-config = Config(ENV_PATH)
+config = Config(str(ENV_PATH))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
