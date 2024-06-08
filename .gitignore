@@ -16,6 +16,7 @@ __pycache__
 local_settings.py
 db.sqlite3
 media
+.env
 
 # Development
 .vscode/
@@ -34,5 +35,5 @@ media
 .Trashes
 ehthumbs.db
 Thumbs.db
-.env!/.env
+*/.env
 !/documents/
