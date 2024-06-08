@@ -6,7 +6,7 @@ from product.models import Product
 class Characteristic(models.Model):
     key = models.CharField(max_length=50)
     value = models.CharField(max_length=250)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='characteristics', on_delete=models.CASCADE)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

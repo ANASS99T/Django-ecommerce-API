@@ -11,5 +11,7 @@ urlpatterns = [
     path('api/characteristics/', include('characteristic.urls')),
     path('api/currencies/', include('currency.urls')),
     path('api/documents/', include('document.urls')),
+    path('api/products/', include('product.urls')),
 
 ]
+
