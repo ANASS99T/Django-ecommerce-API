@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'permission',
     "currency",
     "document",
-    "characteristic"
+    "characteristic",
+    "cartItem"
 ]
 
 AUTH_USER_MODEL = 'user.Client'

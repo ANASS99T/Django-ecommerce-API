@@ -12,6 +12,6 @@ urlpatterns = [
     path('api/currencies/', include('currency.urls')),
     path('api/documents/', include('document.urls')),
     path('api/products/', include('product.urls')),
-
+    path('api/cart/', include('cart.urls')),
+    path('api/cartItem/', include('cartItem.urls')),
 ]
-
