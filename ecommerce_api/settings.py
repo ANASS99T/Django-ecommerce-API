@@ -58,7 +58,9 @@ INSTALLED_APPS = [
     "currency",
     "document",
     "characteristic",
-    "cartItem"
+    "cartItem",
+    "orderItem",
+    'drf_yasg',
 ]
 
 AUTH_USER_MODEL = 'user.Client'

@@ -7,7 +7,6 @@ from rest_framework.test import APIClient
 
 from user.models import Client
 from .models import Cart
-from django.utils import timezone
 
 
 class CartViewSetTestCase(TestCase):
