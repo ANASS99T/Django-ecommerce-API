@@ -5,20 +5,16 @@ from user.models import Client
 
 
 class Cart(models.Model):
-    client = models.OneToOneField(Client, on_delete=models.CASCADE)
+    client = models.OneToOneField(Client, on_delete=models.CASCADE, related_name='cart')
+    status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     def delete(self, *args, **kwargs):
         self.deleted_at = timezone.now()
+        self.status = False
         self.save()
 
 
-class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, related_name='items',
-                             on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+

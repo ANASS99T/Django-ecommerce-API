@@ -42,8 +42,8 @@ class CharacteristicViewSetTestCase(TestCase):
         }
         response = self.api_client.put(update_url, update_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        updated_permission = response.data
-        self.assertEqual(updated_permission['value'], '2024')
+        updated_data = response.data
+        self.assertEqual(updated_data['value'], '2024')
         mock_check_permissions.assert_called()
 
     @patch('characteristic.views.check_permissions', return_value=True)

@@ -49,8 +49,8 @@ class ProductViewSetTestCase(TestCase):
         }
         response = self.api_client.put(update_url, update_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        updated_permission = response.data
-        self.assertEqual(updated_permission['name'], 'Updated product name')
+        updated_data = response.data
+        self.assertEqual(updated_data['name'], 'Updated product name')
         mock_check_permissions.assert_called()
 
     @patch('product.views.check_permissions', return_value=True)
